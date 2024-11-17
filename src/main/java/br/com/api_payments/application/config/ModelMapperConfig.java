@@ -1,10 +1,7 @@
 package br.com.api_payments.application.config;
 
-import br.com.api_food.application.dtos.order.response.OrderResponse;
-import br.com.api_food.domain.entity.order.OrderDomain;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

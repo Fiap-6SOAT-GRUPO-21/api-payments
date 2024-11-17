@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-payments-service
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-name: api-payments-service
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8088
+      nodePort: 30007
+  selector:
+    app: api-payments

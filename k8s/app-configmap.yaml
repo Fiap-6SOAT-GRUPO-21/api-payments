@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-payments-config
+data:
+  NOTIFICATION_URL: ""
+  DB_NAME: ""
+  DB_URL: ""
+  DB_USERNAME: ""
+  DB_PASSWORD: ""
+  DB_PORT: ""
+
+
+
+#  rodando localmente
+#  DB_URL: "postgresql-service"
+#  DB_PORT: 5432
+#  DB_USERNAME: postgres
+#  DB_PASSWORD: postgres
+#  DB_NAME: apipayments

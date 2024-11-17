@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-payments
+  labels:
+    app: api-payments
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-payments
+  template:
+    metadata:
+      labels:
+        app: api-payments
+    spec:
+      serviceAccountName: default
+      initContainers:
+        - name: wait-for-lb
+          image: bitnami/kubectl:latest
+          command: [ "/bin/sh", "-c" ]
+          env:
+            - name: ENVIRONMENT_DEPLOY
+              value: "AWS" # Configuração para ambiente AWS
+          args:
+            - |
+              echo "Valor da variável ENVIRONMENT_DEPLOY: $ENVIRONMENT_DEPLOY"
+              if [ "$ENVIRONMENT_DEPLOY" != "AWS" ]; then
+                echo "Ambiente não é AWS. Ignorando a atualização do Load Balancer."
+                exit 0
+              fi
+
+              SERVICE_NAME="api-payments-service"
+              NAMESPACE="default"
+              echo "Aguardando Load Balancer IP..."
+              while true; do
+                EXTERNAL_IP=$(kubectl get svc $SERVICE_NAME -n $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+                if [ -n "$EXTERNAL_IP" ]; then
+                  break
+                fi
+                echo -n "."
+                sleep 10
+              done
+              echo "Load Balancer IP obtido: $EXTERNAL_IP"
+
+              # Atualiza o ConfigMap com a nova URL
+              kubectl patch configmap api-payments-config --type=merge -p='{"data": {"NOTIFICATION_URL": "http://'"$EXTERNAL_IP"'/order/notifications"}}'
+      containers:
+        - name: api-payments
+          image: josevitordurante/api-payments:latest
+          ports:
+            - containerPort: 8088
+          env:
+            - name: PORT
+              value: "8088"
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: api-payments-config
+                  key: DB_NAME
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api-payments-config
+                  key: DB_URL
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: api-payments-config
+                  key: DB_PORT
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: api-payments-config
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: api-payments-config
+                  key: DB_PASSWORD
+            - name: NOTIFICATION_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api-payments-config
+                  key: NOTIFICATION_URL
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"

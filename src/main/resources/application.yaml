@@ -1,0 +1,41 @@
+server:
+  port: ${PORT:8088}
+  error:
+    include-message: always
+
+spring:
+  application:
+    name: api-payments-service
+  datasource:
+    url: jdbc:postgresql://${DB_URL:localhost}:${DB_PORT:5432}/${DB_NAME:apipayments}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    hibernate:
+      ddl-auto: create
+    defer-datasource-initialization:
+  output:
+    ansi:
+      enabled: Always
+  sql:
+    init:
+      mode: always  #colocado para subir data.sql
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+mercado-pago:
+  url: "https://api.mercadopago.com"
+  access-token: "Bearer APP_USR-151362775144770-012219-ad26be97b5a2ceab5965aaf6409a0d70-1650421194"
+  notification-url: ${NOTIFICATION_URL:https://warm-sheepdog-secondly.ngrok-free.app/order/notifications}

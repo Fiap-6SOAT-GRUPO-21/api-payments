@@ -1,0 +1,7 @@
+authtoken: 2j3cnUV3yH6cdRky91MxR6f2V2P_2ExXVqxYcLfjX1KYbZRs3
+tunnels:
+  api-payments:
+    proto: http
+    addr: http://api-payments:8088
+    domain: pure-daily-grackle.ngrok-free.app
+version: 2

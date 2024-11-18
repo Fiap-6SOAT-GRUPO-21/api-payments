@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-payments-config
+data:
+  NOTIFICATION_URL: ""
+  DB_NAME: ""
+  DB_URL: ""
+  DB_USERNAME: ""
+  DB_PASSWORD: ""
+  DB_PORT: ""
+  API_FOOD_URL: "http://api-food-service.default.svc.cluster.local:88"
+  API_ORDER_URL: "http://api-order-service.default.svc.cluster.local:89"
+  API_PAYMENT_URL: "http://api-payment-service.default.svc.cluster.local:90"

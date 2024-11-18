@@ -8,8 +8,8 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-    - port: 80
-      targetPort: 8088
-      nodePort: 30007
+    - port: 90
+      targetPort: 8090
+      nodePort: 30009
   selector:
     app: api-payments

@@ -49,10 +49,10 @@ spec:
         - name: api-payments
           image: josevitordurante/api-payments:latest
           ports:
-            - containerPort: 8088
+            - containerPort: 8090
           env:
             - name: PORT
-              value: "8088"
+              value: "8090"
             - name: DB_NAME
               valueFrom:
                 configMapKeyRef:
@@ -83,6 +83,21 @@ spec:
                 configMapKeyRef:
                   name: api-payments-config
                   key: NOTIFICATION_URL
+            - name: API_FOOD_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api-payments-config
+                  key: API_FOOD_URL
+            - name: API_ORDER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api-payments-config
+                  key: API_ORDER_URL
+            - name: API_PAYMENT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api-payments-config
+                  key: API_PAYMENT_URL
           resources:
             requests:
               memory: "128Mi"

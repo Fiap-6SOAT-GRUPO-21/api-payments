@@ -9,58 +9,57 @@ volumes:
   pgdata:
 
 services:
-  db_postgres:
-    container_name: db_postgres
+  db_postgres_payments:
+    container_name: db_postgres_payments
     image: 'postgres:13.4'
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=apipayments
     ports:
-      - "5432:5432"
-      - '5005:5005'
+      - "5434:5432"
     networks:
       - api-payments-network
     volumes:
       - pgdata:/var/lib/postgresql/data
+#
+#  api-payments:
+#    container_name: api-payments
+#    image: api-payments
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    ports:
+#      - '8088:8088'
+#      - '5006:5006'
+#    environment:
+#      PORT: 8088
+#      DB_URL: db_postgres
+#      DB_PORT: 5432
+#      DB_USERNAME: postgres
+#      DB_PASSWORD: postgres
+#      DB_NAME: apipayments
+#      NOTIFICATION_URL: https://pure-daily-grackle.ngrok-free.app/order/notifications
+#      ADDITIONAL_OPTS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
+#    networks:
+#      - api-payments-network
+#    depends_on:
+#      - db_postgres
 
-  api-payments:
-    container_name: api-payments
-    image: api-payments
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - '8088:8088'
-      - '5006:5006'
-    environment:
-      PORT: 8088
-      DB_URL: db_postgres
-      DB_PORT: 5432
-      DB_USERNAME: postgres
-      DB_PASSWORD: postgres
-      DB_NAME: apipayments
-      NOTIFICATION_URL: https://pure-daily-grackle.ngrok-free.app/order/notifications
-      ADDITIONAL_OPTS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
-    networks:
-      - api-payments-network
-    depends_on:
-      - db_postgres
-
-  ngrok:
-    image: ngrok/ngrok:latest
-    container_name: ngrok
-    restart: unless-stopped
-    command:
-      - "start"
-      - "--all"
-      - "--config"
-      - "/etc/ngrok.yml"
-    volumes:
-      - ./ngrok.yml:/etc/ngrok.yml
-    ports:
-      - 4040:4040
-    networks:
-      - api-payments-network
-    depends_on:
-      - api-payments
+#  ngrok:
+#    image: ngrok/ngrok:latest
+#    container_name: ngrok
+#    restart: unless-stopped
+#    command:
+#      - "start"
+#      - "--all"
+#      - "--config"
+#      - "/etc/ngrok.yml"
+#    volumes:
+#      - ./ngrok.yml:/etc/ngrok.yml
+#    ports:
+#      - 4040:4040
+#    networks:
+#      - api-payments-network
+#    depends_on:
+#      - api-payments

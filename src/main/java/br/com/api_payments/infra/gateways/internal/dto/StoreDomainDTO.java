@@ -1,6 +1,5 @@
 package br.com.api_payments.infra.gateways.internal.dto;
 
-import br.com.api_payments.domain.entity.payment.MercadoPagoGatewayDomain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +15,5 @@ public class StoreDomainDTO {
     private String name;
     private boolean active = true;
     private UUID idMercadoPagoGateway;
-    private MercadoPagoGatewayDomain mercadoPagoGateway;
+    private MercadoPagoGatewayDTO mercadoPagoGateway;
 }

@@ -12,7 +12,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class OrderItemDTO {
 
-
     private UUID idProduct;
     private String productName;
     private BigDecimal productPrice;

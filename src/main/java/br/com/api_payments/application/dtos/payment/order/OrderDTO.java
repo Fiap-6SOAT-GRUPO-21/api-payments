@@ -1,6 +1,5 @@
 package br.com.api_payments.application.dtos.payment.order;
 
-import br.com.api_payments.application.dtos.payment.PaymentDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +17,4 @@ public class OrderDTO {
     private List<OrderItemDTO> items;
     private BigDecimal total;
     private UUID idStore;
-    private UUID idPayment;
-    private PaymentDTO payment;
 }

@@ -39,10 +39,8 @@ public class PaymentController {
     @Operation(summary = "Make a new payment")
     @PostMapping
     public ResponseEntity<PaymentDTO> makeANewPayment(@RequestBody NewPaymentDTO newPaymentDTO) {
-
-
-        var payment = newPayment.execute(newPaymentDTO.getOrderDTO(), newPaymentDTO.getProvider(), null);
-        var paymentDTO = mapper.map(payment, PaymentDTO.class);
+        PaymentDomain payment = newPayment.execute(newPaymentDTO);
+        PaymentDTO paymentDTO = mapper.map(payment, PaymentDTO.class);
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentDTO);
     }
 
@@ -52,7 +50,7 @@ public class PaymentController {
 
         var payment = findPaymentById.execute(paymentId);
         var paymentDTO = mapper.map(payment, PaymentDTO.class);
-        return ResponseEntity.status(HttpStatus.CREATED).body(paymentDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(paymentDTO);
     }
 
 

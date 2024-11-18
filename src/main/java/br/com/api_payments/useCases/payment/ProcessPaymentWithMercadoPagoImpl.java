@@ -9,7 +9,7 @@ import br.com.api_payments.application.dtos.payment.PaymentIntegrationOrder;
 import br.com.api_payments.application.dtos.payment.PaymentIntegrationResult;
 import br.com.api_payments.domain.entity.payment.enums.PaymentType;
 import br.com.api_payments.domain.useCases.payment.ProcessPayment;
-import br.com.api_payments.infra.gateways.internal.ApiStore;
+import br.com.api_payments.infra.gateways.internal.ApiFood;
 import br.com.api_payments.infra.gateways.internal.dto.StoreDomainDTO;
 import br.com.api_payments.infra.gateways.payment.MercadoPagoClient;
 import br.com.api_payments.useCases.util.DateTimeUtils;
@@ -30,7 +30,7 @@ public class ProcessPaymentWithMercadoPagoImpl implements ProcessPayment {
     private MercadoPagoClient mercadoPagoClient;
 
     @Autowired
-    private ApiStore apiStore;
+    private ApiFood apiStore;
 
     @Autowired
     private ModelMapper modelMapper;

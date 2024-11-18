@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.UUID;
 
 @FeignClient(name = "internal-api-food",
-        url = "${api.url.api-food.store}",
+        url = "${api.url.api-food}",
         configuration = DefaultInterceptor.class
 )
-public interface ApiStore {
+public interface ApiFood {
 
-    @GetMapping("/{storeId}")
+    @GetMapping("store/{storeId}")
     StoreDomainDTO findStoreById(@PathVariable("storeId") UUID storeId);
 }

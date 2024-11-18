@@ -1,4 +1,4 @@
-package br.com.api_payments.domain.entity.payment;
+package br.com.api_payments.infra.gateways.internal.dto;
 
 
 import br.com.api_payments.domain.entity.DomainEntity;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MercadoPagoGatewayDomain extends DomainEntity {
+public class MercadoPagoGatewayDTO extends DomainEntity {
 
     private String collectors;
     private String externalPos;

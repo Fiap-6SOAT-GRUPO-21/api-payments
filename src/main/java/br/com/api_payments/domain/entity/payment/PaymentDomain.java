@@ -17,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PaymentDomain extends DomainEntity {
 
-    private UUID paymentId;
+    private UUID id;
 
     private UUID idOrder;
 

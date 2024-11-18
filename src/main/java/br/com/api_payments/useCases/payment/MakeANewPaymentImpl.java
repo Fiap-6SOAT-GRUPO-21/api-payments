@@ -1,5 +1,6 @@
 package br.com.api_payments.useCases.payment;
 
+import br.com.api_payments.application.dtos.payment.NewPaymentDTO;
 import br.com.api_payments.application.dtos.payment.PaymentIntegrationItem;
 import br.com.api_payments.application.dtos.payment.PaymentIntegrationOrder;
 import br.com.api_payments.application.dtos.payment.PaymentIntegrationResult;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -25,12 +27,15 @@ import java.util.UUID;
 public class MakeANewPaymentImpl implements MakeANewPayment {
 
     final PaymentPersistence paymentPersistence;
+
+    private final Map<String, ProcessPayment> processPaymentList;
+
     @Override
-    public PaymentDomain execute(OrderDTO orderDomain, PaymentType provider, ProcessPayment processPayment) {
+    public PaymentDomain execute(NewPaymentDTO newPaymentDTO) {
 
         List<PaymentIntegrationItem> item = new ArrayList<>();
 
-        orderDomain.getItems().forEach(itemDomain -> item.add(new PaymentIntegrationItem(
+        newPaymentDTO.getOrderDTO().getItems().forEach(itemDomain -> item.add(new PaymentIntegrationItem(
                 itemDomain.getQuantity(),
                 itemDomain.getProductPrice().multiply(BigDecimal.valueOf(itemDomain.getQuantity())),
                 itemDomain.getProductPrice(),
@@ -39,21 +44,25 @@ public class MakeANewPaymentImpl implements MakeANewPayment {
 
 
         PaymentIntegrationOrder paymentIntegrationOrder = new PaymentIntegrationOrder(
-                orderDomain.getIdStore(),
+                newPaymentDTO.getOrderDTO().getIdStore(),
                 UUID.randomUUID(),
-                orderDomain.getTotal(),
+                newPaymentDTO.getOrderDTO().getTotal(),
                 item
         );
+
+        ProcessPayment processPayment = processPaymentList.get(newPaymentDTO.getProvider().name());
+        if (processPayment == null)
+            throw new IllegalArgumentException("Invalid payment provider: " + newPaymentDTO.getProvider());
 
         PaymentIntegrationResult paymentIntegrationResult = processPayment.processPayment(paymentIntegrationOrder);
 
         PaymentDomain paymentDomain = new PaymentDomain();
-        paymentDomain.setPaymentId(paymentIntegrationResult.getPaymentId());
+        paymentDomain.setId(paymentIntegrationResult.getPaymentId());
         paymentDomain.setAmount(paymentIntegrationOrder.getAmount());
         paymentDomain.setQrCode(paymentIntegrationResult.getQrCode());
-        paymentDomain.setType(provider);
+        paymentDomain.setType(newPaymentDTO.getProvider());
         paymentDomain.setStatus(PaymentStatus.PENDING);
-        paymentDomain.setIdOrder(orderDomain.getOrderId());
+        paymentDomain.setIdOrder(newPaymentDTO.getOrderDTO().getOrderId());
 
         return paymentPersistence.save(paymentDomain);
     }

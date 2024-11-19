@@ -40,9 +40,7 @@ public class UpdatePaymentStatusImpl implements UpdatePaymentStatus {
             paymentDomain.setStatus(PaymentStatus.fromString(response.getStatus()));
 
             if(response.getStatus().equals("closed"))
-                persistencePort.save(paymentDomain);
-
-            apiOrder.updateOrderStatus(paymentDomain.getIdOrder(), StatusOrder.IN_PREPARATION);
+                apiOrder.updateOrderStatus(paymentDomain.getIdOrder(), StatusOrder.IN_PREPARATION);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

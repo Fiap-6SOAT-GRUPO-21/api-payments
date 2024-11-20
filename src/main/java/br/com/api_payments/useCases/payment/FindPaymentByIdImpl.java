@@ -15,7 +15,7 @@ public class FindPaymentByIdImpl implements FindPaymentById {
 
     final PaymentPersistence paymentPersistence;
     @Override
-    public PaymentDomain execute(String idPayment) {
-        return paymentPersistence.findById(idPayment).orElseThrow(PaymentNotFound::new);
+    public PaymentDomain execute(UUID idPayment) {
+        return paymentPersistence.findById(idPayment);
     }
 }

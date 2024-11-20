@@ -36,4 +36,4 @@ api:
 mercado-pago:
   url: "https://api.mercadopago.com"
   access-token: "Bearer APP_USR-151362775144770-012219-ad26be97b5a2ceab5965aaf6409a0d70-1650421194"
-  notification-url: ${NOTIFICATION_URL:https://warm-sheepdog-secondly.ngrok-free.app/order/notifications}
+  notification-url: ${NOTIFICATION_URL:https://81b2-177-137-146-58.ngrok-free.app/order/notifications}

@@ -14,9 +14,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-@Document(collation = "payments")
+@Document(collection = "payments", collation = "en")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -44,5 +43,5 @@ public class PaymentEntity {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    private UUID idOrder;
+    private String idOrder;
 }

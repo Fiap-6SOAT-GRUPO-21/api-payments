@@ -6,8 +6,14 @@ server:
 spring:
   application:
     name: api-payments-service
-  datasource:
-    url: mongodb://${DB_USERNAME:mongo}:${DB_PASSWORD:mongo}@${DB_CLUSTER_ENDPOINT:localhost}:${DB_PORT:27017}/apipayments?ssl=true&replicaSet=rs0&readPreference=primary&retryWrites=false
+  data:
+    mongodb:
+      host: ${DB_CLUSTER_ENDPOINT:localhost}
+      port: ${DB_PORT:27017}
+      database: apipayments
+      username: ${DB_USERNAME:mongo}
+      password: ${DB_PASSWORD:mongo}
+      authentication-database: admin
   jpa:
     properties:
       hibernate:
@@ -36,4 +42,4 @@ api:
 mercado-pago:
   url: "https://api.mercadopago.com"
   access-token: "Bearer APP_USR-151362775144770-012219-ad26be97b5a2ceab5965aaf6409a0d70-1650421194"
-  notification-url: ${NOTIFICATION_URL:https://81b2-177-137-146-58.ngrok-free.app/order/notifications}
+  notification-url: ${NOTIFICATION_URL:https://05c4-177-137-146-58.ngrok-free.app/order/notifications}

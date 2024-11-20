@@ -8,9 +8,9 @@ spring:
     name: api-payments-service
   data:
     mongodb:
-      host: ${DB_CLUSTER_ENDPOINT:localhost}
+      host: ${DB_URL:localhost}
       port: ${DB_PORT:27017}
-      database: apipayments
+      database: ${DB_NAME:apipayments}
       username: ${DB_USERNAME:mongo}
       password: ${DB_PASSWORD:mongo}
       authentication-database: admin

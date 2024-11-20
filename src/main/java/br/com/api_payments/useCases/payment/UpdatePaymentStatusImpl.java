@@ -30,7 +30,7 @@ public class UpdatePaymentStatusImpl implements UpdatePaymentStatus {
     public void execute(Long merchantOrderId) {
 
         MerchantOrderResponse response = mercadoPagoClient.getOrder(accessToken, merchantOrderId);
-        PaymentDomain paymentDomain = findPaymentById.execute(UUID.fromString(response.getExternalReference()));
+        PaymentDomain paymentDomain = findPaymentById.execute(response.getExternalReference());
         paymentDomain.setStatus(PaymentStatus.fromString(response.getStatus()));
 
         persistencePort.save(paymentDomain);

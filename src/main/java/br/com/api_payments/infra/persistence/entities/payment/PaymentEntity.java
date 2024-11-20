@@ -3,20 +3,20 @@ package br.com.api_payments.infra.persistence.entities.payment;
 import br.com.api_payments.domain.entity.payment.enums.PaymentStatus;
 import br.com.api_payments.domain.entity.payment.enums.PaymentType;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.UuidGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity(name = "payments")
+@Document(collation = "payments")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,8 +24,7 @@ import java.util.UUID;
 public class PaymentEntity {
 
     @Id
-    @UuidGenerator
-    private UUID id;
+    private String id;
 
     @NotNull
     private BigDecimal amount;
@@ -34,23 +33,16 @@ public class PaymentEntity {
     private String qrCode;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private PaymentType type;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private PaymentStatus status;
 
-    @CreationTimestamp
+    @CreatedDate
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    // ---------------------------------------- RELACIONAMENTOS ----------------------------------
-
-    @Column(name = "ID_ORDER", nullable = false)
     private UUID idOrder;
 }

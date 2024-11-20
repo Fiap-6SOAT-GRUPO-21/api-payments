@@ -7,25 +7,17 @@ spring:
   application:
     name: api-payments-service
   datasource:
-    url: jdbc:postgresql://${DB_URL:localhost}:${DB_PORT:5434}/${DB_NAME:apipayments}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
+    url: mongodb://${DB_USERNAME:mongo}:${DB_PASSWORD:mongo}@${DB_CLUSTER_ENDPOINT:localhost}:${DB_PORT:27017}/apipayments?ssl=true&replicaSet=rs0&readPreference=primary&retryWrites=false
   jpa:
     properties:
       hibernate:
         show_sql: false
-        jdbc:
-          lob:
-            non_contextual_creation: true
     hibernate:
-      ddl-auto: create
-    defer-datasource-initialization:
+      ddl-auto: none
+    defer-datasource-initialization: false
   output:
     ansi:
       enabled: Always
-  sql:
-    init:
-      mode: never
 
 springdoc:
   api-docs:

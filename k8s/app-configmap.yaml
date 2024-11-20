@@ -6,6 +6,7 @@ data:
   NOTIFICATION_URL: ""
   DB_NAME: ""
   DB_URL: ""
+  DB_CLUSTER_ENDPOINT: ""
   DB_USERNAME: ""
   DB_PASSWORD: ""
   DB_PORT: ""

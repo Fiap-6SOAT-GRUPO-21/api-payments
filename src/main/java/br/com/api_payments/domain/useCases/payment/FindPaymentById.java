@@ -6,5 +6,5 @@ import java.util.UUID;
 
 public interface FindPaymentById {
 
-    PaymentDomain execute(UUID idPayment);
+    PaymentDomain execute(String idPayment);
 }

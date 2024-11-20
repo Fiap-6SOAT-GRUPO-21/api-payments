@@ -61,24 +61,24 @@ Para implantar a aplicação no EKS, você precisa aplicar o arquivo de configur
 
 2. Aplique o arquivo de configuração do Kubernetes dentro da pasta user/.aws/credentials:
 
-#### Postgres
+#### Mongo
 
-1. Rodar o pvc do Postgres
+1. Rodar o pvc do MongoDB
 
 ```bash
-kubectl apply -f postgresql-pvc.yaml
+kubectl apply -f mongodb-pvc.yaml
 ```
 
-2. Rodar os services do Postgres
+2. Rodar os services do MongoDB
 
 ```bash
-kubectl apply -f postgresql-service.yaml
+kubectl apply -f mongodb-service.yaml
 ```
 
-3. Rodar o deployment do Postgres
+3. Rodar o deployment do Mongo
 
 ```bash
-kubectl apply -f postgresql-statefulset.yaml
+kubectl apply -f mongodb-statefulset.yaml
 ```
 
 #### Aplicação api-payments
@@ -110,10 +110,10 @@ kubectl apply -f metrics.yaml
 ### Subir tudo
 
 ```bash
-kubectl apply -f postgres-pv.yaml
-kubectl apply -f postgresql-pvc.yaml
-kubectl apply -f postgresql-statefulset.yaml
-kubectl apply -f postgresql-service.yaml
+kubectl apply -f mongo-pv.yaml
+kubectl apply -f mongodb-pvc.yaml
+kubectl apply -f mongodb-statefulset.yaml
+kubectl apply -f mongodb-service.yaml
 kubectl apply -f app-deployment.yaml
 kubectl apply -f app-service.yaml
 kubectl apply -f app-hpa.yaml

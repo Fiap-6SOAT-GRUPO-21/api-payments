@@ -46,7 +46,7 @@ public class PaymentController {
 
     @Operation(summary = "Make a new payment")
     @GetMapping("/{paymentId}")
-    public ResponseEntity<PaymentDTO> findPaymentById(@PathVariable("paymentId") UUID paymentId) {
+    public ResponseEntity<PaymentDTO> findPaymentById(@PathVariable("paymentId") String paymentId) {
 
         var payment = findPaymentById.execute(paymentId);
         var paymentDTO = mapper.map(payment, PaymentDTO.class);
@@ -55,7 +55,7 @@ public class PaymentController {
 
 
     @GetMapping(value = "/qr-code/{idPayment}", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<ByteArrayResource> generateQRCode(@PathVariable UUID idPayment) {
+    public ResponseEntity<ByteArrayResource> generateQRCode(@PathVariable String idPayment) {
         try {
 
             PaymentDomain paymentDomain = findPaymentById.execute(idPayment);

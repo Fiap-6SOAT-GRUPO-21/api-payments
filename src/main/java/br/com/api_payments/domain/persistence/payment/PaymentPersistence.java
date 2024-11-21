@@ -9,5 +9,5 @@ public interface PaymentPersistence {
 
     PaymentDomain save(PaymentDomain paymentDomain);
 
-    PaymentDomain findById(UUID idPayment);
+    PaymentDomain findById(String idPayment);
 }

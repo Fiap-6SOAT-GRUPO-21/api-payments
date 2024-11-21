@@ -14,8 +14,9 @@ import java.util.UUID;
 public class FindPaymentByIdImpl implements FindPaymentById {
 
     final PaymentPersistence paymentPersistence;
+
     @Override
-    public PaymentDomain execute(UUID idPayment) {
+    public PaymentDomain execute(String idPayment) {
         return paymentPersistence.findById(idPayment);
     }
 }

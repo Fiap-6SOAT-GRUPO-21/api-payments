@@ -3,14 +3,10 @@ package br.com.api_payments.application.dtos.integration.mercadopago.payment.req
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Data
-@Setter
-@Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ItemMercadoPago {
     @JsonProperty("sku_number")

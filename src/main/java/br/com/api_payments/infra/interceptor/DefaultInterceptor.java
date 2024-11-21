@@ -11,5 +11,4 @@ public class DefaultInterceptor extends FeignBuilder {
     public Feign.Builder builder() {
         return super.feignBuilder();
     }
-
 }

@@ -5,6 +5,7 @@ import br.com.api_payments.domain.entity.payment.PaymentDomain;
 import br.com.api_payments.domain.persistence.payment.PaymentPersistence;
 import br.com.api_payments.infra.persistence.entities.payment.PaymentEntity;
 import br.com.api_payments.useCases.payment.exceptions.PaymentNotFound;
+import br.com.api_payments.useCases.payment.exceptions.PaymentNotFound;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -16,19 +17,19 @@ import java.util.UUID;
 @Component
 public class PaymentPersistencePortImpl implements PaymentPersistence {
 
-    private final PaymentJpaRepository paymentJpaRepository;
+    private final PaymentMongoRepository mongoRepository;
     private final ModelMapper modelMapper;
 
     @Override
     public PaymentDomain save(PaymentDomain paymentDomain) {
         PaymentEntity map = modelMapper.map(paymentDomain, PaymentEntity.class);
-        PaymentEntity paymentEntity = paymentJpaRepository.save(map);
+        PaymentEntity paymentEntity = mongoRepository.save(map);
         return modelMapper.map(paymentEntity, PaymentDomain.class);
     }
 
     @Override
-    public PaymentDomain findById(UUID idPayment) {
-        return paymentJpaRepository.findById(idPayment)
+    public PaymentDomain findById(String idPayment) {
+        return mongoRepository.findById(idPayment)
                 .map(paymentEntity -> modelMapper.map(paymentEntity, PaymentDomain.class))
                 .orElseThrow(PaymentNotFound::new);
     }

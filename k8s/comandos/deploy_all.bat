@@ -1,8 +1,8 @@
 @echo off
-kubectl apply -f ../postgres-pv.yaml
-kubectl apply -f ../postgresql-pvc.yaml
-kubectl apply -f ../postgresql-statefulset.yaml
-kubectl apply -f ../postgresql-service.yaml
+kubectl apply -f ../mongo-pv.yaml
+kubectl apply -f ../mongodb-pvc.yaml
+kubectl apply -f ../mongodb-statefulset.yaml
+kubectl apply -f ../mongodb-service.yaml
 kubectl apply -f ../app-configmap.yaml
 kubectl apply -f ../app-deployment.yaml
 kubectl apply -f ../app-service.yaml

@@ -6,26 +6,20 @@ server:
 spring:
   application:
     name: api-payments-service
-  datasource:
-    url: jdbc:postgresql://${DB_URL:localhost}:${DB_PORT:5434}/${DB_NAME:apipayments}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
+  data:
+    mongodb:
+      uri: mongodb+srv://${DB_USERNAME:user}:${DB_PASSWORD:pass}@${CLUSTER_NAME:localhost:27018}/${DB_NAME:apipayments}?retryWrites=true&w=majority
+      authentication-database: admin
   jpa:
     properties:
       hibernate:
         show_sql: false
-        jdbc:
-          lob:
-            non_contextual_creation: true
     hibernate:
-      ddl-auto: create
-    defer-datasource-initialization:
+      ddl-auto: none
+    defer-datasource-initialization: false
   output:
     ansi:
       enabled: Always
-  sql:
-    init:
-      mode: never
 
 springdoc:
   api-docs:
@@ -44,4 +38,4 @@ api:
 mercado-pago:
   url: "https://api.mercadopago.com"
   access-token: "Bearer APP_USR-151362775144770-012219-ad26be97b5a2ceab5965aaf6409a0d70-1650421194"
-  notification-url: ${NOTIFICATION_URL:https://81b2-177-137-146-58.ngrok-free.app/order/notifications}
+  notification-url: ${NOTIFICATION_URL:https://05c4-177-137-146-58.ngrok-free.app/order/notifications}

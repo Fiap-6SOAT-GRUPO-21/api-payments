@@ -6,22 +6,21 @@ networks:
     driver: bridge
 
 volumes:
-  pgdata:
+  mongodbdata:
 
 services:
-  db_postgres_payments:
-    container_name: db_postgres_payments
-    image: 'postgres:13.4'
+  mongodb:
+    image: mongodb/mongodb-atlas-local
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=apipayments
+      - MONGODB_INITDB_ROOT_USERNAME=user
+      - MONGODB_INITDB_ROOT_PASSWORD=pass
+      - MONGO_INITDB_DATABASE=apipayments
     ports:
-      - "5434:5432"
+      - 27018:27017
     networks:
       - api-payments-network
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - mongodbdata:/var/lib/mongodb/data
 #
 #  api-payments:
 #    container_name: api-payments

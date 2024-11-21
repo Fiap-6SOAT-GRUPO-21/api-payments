@@ -8,11 +8,7 @@ spring:
     name: api-payments-service
   data:
     mongodb:
-      host: ${DB_URL:localhost}
-      port: ${DB_PORT:27017}
-      database: ${DB_NAME:apipayments}
-      username: ${DB_USERNAME:mongo}
-      password: ${DB_PASSWORD:mongo}
+      uri: mongodb+srv://${DB_USERNAME:user}:${DB_PASSWORD:pass}@${CLUSTER_NAME:localhost:27018}/${DB_NAME:apipayments}?retryWrites=true&w=majority
       authentication-database: admin
   jpa:
     properties:

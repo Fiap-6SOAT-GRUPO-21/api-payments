@@ -29,16 +29,6 @@ jobs:
       - name: Update kubeconfig
         run: aws eks update-kubeconfig --name techchallenge --region us-east-1
 
-      - name: Delete Kubernetes Resources for api-payments
-        run: |
-          kubectl delete deployment api-payments -n default
-          kubectl delete service api-payments-service -n default
-          kubectl delete pod -l app=api-payments -n default
-          kubectl delete hpa app-hpa-api-payments -n default
-          kubectl delete rolebinding -l app=api-payments -n default
-          kubectl delete configmap api-payments-config -n default
-          kubectl delete rolebinding -l app=api-payments -n default
-
       - name: Get DocumentDB credentials from SSM Parameter Store
         id: get-parameters
         run: |

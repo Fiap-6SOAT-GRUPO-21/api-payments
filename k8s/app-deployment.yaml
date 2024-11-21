@@ -44,7 +44,7 @@ spec:
               echo "Load Balancer IP obtido: $EXTERNAL_IP"
 
               # Atualiza o ConfigMap com a nova URL
-              kubectl patch configmap api-payments-config --type=merge -p='{"data": {"NOTIFICATION_URL": "http://'"$EXTERNAL_IP"'/order/notifications"}}'
+              kubectl patch configmap api-payments-config --type=merge -p='{"data": {"NOTIFICATION_URL": "http://'"$EXTERNAL_IP"':90/order/notifications"}}'
       containers:
         - name: api-payments
           image: josevitordurante/api-payments:latest

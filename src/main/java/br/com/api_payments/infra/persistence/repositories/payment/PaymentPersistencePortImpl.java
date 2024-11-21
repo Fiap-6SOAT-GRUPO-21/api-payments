@@ -4,6 +4,8 @@ package br.com.api_payments.infra.persistence.repositories.payment;
 import br.com.api_payments.domain.entity.payment.PaymentDomain;
 import br.com.api_payments.domain.persistence.payment.PaymentPersistence;
 import br.com.api_payments.infra.persistence.entities.payment.PaymentEntity;
+import br.com.api_payments.useCases.payment.exceptions.PaymentNotFound;
+import br.com.api_payments.useCases.payment.exceptions.PaymentNotFound;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -26,8 +28,9 @@ public class PaymentPersistencePortImpl implements PaymentPersistence {
     }
 
     @Override
-    public Optional<PaymentDomain> findById(String idPayment) {
+    public PaymentDomain findById(String idPayment) {
         return mongoRepository.findById(idPayment)
-                .map(paymentEntity -> modelMapper.map(paymentEntity, PaymentDomain.class));
+                .map(paymentEntity -> modelMapper.map(paymentEntity, PaymentDomain.class))
+                .orElseThrow(PaymentNotFound::new);
     }
 }

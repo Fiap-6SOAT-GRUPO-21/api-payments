@@ -36,7 +36,7 @@ class FindPaymentByIdImplTest {
         var UUIDPayment = UUID.randomUUID();
         var idPayment = String.valueOf(UUIDPayment);
         var payment = new PaymentDomain(UUID.fromString(idPayment), UUID.randomUUID(), BigDecimal.valueOf(10), PaymentType.MERCADO_PAGO, "qr-code", PaymentStatus.PENDING);
-        when(paymentPersistence.findById(idPayment)).thenReturn(Optional.of(payment));
+        when(paymentPersistence.findById(idPayment)).thenReturn(payment);
 
         // Act
         var result = findPaymentById.execute(idPayment);
@@ -54,12 +54,11 @@ class FindPaymentByIdImplTest {
 
         // Arrange
         var idPayment = String.valueOf(UUID.randomUUID());
-        when(paymentPersistence.findById(idPayment)).thenReturn(Optional.empty());
+        when(paymentPersistence.findById(idPayment)).thenThrow(PaymentNotFound.class);
 
         // Act & Assert
         assertThatThrownBy(() -> findPaymentById.execute(idPayment))
-                .isInstanceOf(PaymentNotFound.class)
-                .hasMessageContaining("Payment not exists");
+                .isInstanceOf(PaymentNotFound.class);
     }
   
 }

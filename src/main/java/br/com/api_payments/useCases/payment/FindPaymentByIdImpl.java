@@ -14,8 +14,9 @@ import java.util.UUID;
 public class FindPaymentByIdImpl implements FindPaymentById {
 
     final PaymentPersistence paymentPersistence;
+
     @Override
     public PaymentDomain execute(String idPayment) {
-        return paymentPersistence.findById(idPayment).orElseThrow(PaymentNotFound::new);
+        return paymentPersistence.findById(idPayment);
     }
 }

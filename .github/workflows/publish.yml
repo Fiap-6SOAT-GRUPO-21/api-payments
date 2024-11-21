@@ -32,14 +32,16 @@ jobs:
       - name: Get DocumentDB credentials from SSM Parameter Store
         id: get-parameters
         run: |
-          DB_CLUSTER_ENDPOINT=$(aws ssm get-parameter --name "/techchallenge/api_payments/documentdb/cluster_endpoint" --with-decryption --query "Parameter.Value" --output text)
-          DB_USERNAME=$(aws ssm get-parameter --name "/techchallenge/api_payments/documentdb/db_username" --with-decryption --query "Parameter.Value" --output text)
-          DB_PASSWORD=$(aws ssm get-parameter --name "/techchallenge/api_payments/documentdb/db_password" --with-decryption --query "Parameter.Value" --output text)
-          DB_PORT=$(aws ssm get-parameter --name "/techchallenge/api_payments/documentdb/db_port" --with-decryption --query "Parameter.Value" --output text)
-          echo "DB_CLUSTER_ENDPOINT=DB_CLUSTER_ENDPOINT" >> $GITHUB_ENV
+          DB_URL=$(aws ssm get-parameter --name "/techchallenge/api_payments/docdb/db_url" --with-decryption --query "Parameter.Value" --output text)
+          DB_USERNAME=$(aws ssm get-parameter --name "/techchallenge/api_payments/docdb/db_username" --with-decryption --query "Parameter.Value" --output text)
+          DB_PASSWORD=$(aws ssm get-parameter --name "/techchallenge/api_payments/docdb/db_password" --with-decryption --query "Parameter.Value" --output text)
+          DB_PORT=$(aws ssm get-parameter --name "/techchallenge/api_payments/docdb/db_port" --with-decryption --query "Parameter.Value" --output text)
+          DB_NAME=$(aws ssm get-parameter --name "/techchallenge/api_payments/docdb/db_name" --with-decryption --query "Parameter.Value" --output text)
+          echo "DB_URL=$DB_URL" >> $GITHUB_ENV
           echo "DB_USERNAME=$DB_USERNAME" >> $GITHUB_ENV
           echo "DB_PASSWORD=$DB_PASSWORD" >> $GITHUB_ENV
           echo "DB_PORT=$DB_PORT" >> $GITHUB_ENV
+          echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
 
       - name: Kubectl tool installer
         uses: Azure/setup-kubectl@v4.0.0
@@ -49,7 +51,7 @@ jobs:
       - name: Update ConfigMap with DocumentDB credentials
         run: |
           kubectl apply -f k8s/app-configmap.yaml
-          kubectl patch configmap api-payments-config --type=merge -p='{"data": {"DB_CLUSTER_ENDPOINT": "'"DB_CLUSTER_ENDPOINT"'", "DB_USERNAME": "'"$DB_USERNAME"'", "DB_PASSWORD": "'"$DB_PASSWORD"'", "DB_PORT": "'"$DB_PORT"'"}}'
+          kubectl patch configmap api-payments-config --type=merge -p='{"data": {"DB_NAME": "'"$DB_NAME"'", "DB_URL": "'"$DB_URL"'", "DB_USERNAME": "'"$DB_USERNAME"'", "DB_PASSWORD": "'"$DB_PASSWORD"'", "DB_PORT": "'"$DB_PORT"'"}}'
 
       - name: Deploy Application
         run: |

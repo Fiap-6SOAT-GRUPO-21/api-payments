@@ -2,6 +2,7 @@ package br.com.api_payments.infra.persistence.repositories.payment;
 
 import br.com.api_payments.domain.entity.payment.PaymentDomain;
 import br.com.api_payments.infra.persistence.entities.payment.PaymentEntity;
+import br.com.api_payments.useCases.payment.exceptions.PaymentNotFound;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +16,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.StatusResultMatchersExtensionsKt.isEqualTo;
 
 @ExtendWith(MockitoExtension.class)
 class PaymentPersistencePortImplTest {
@@ -71,28 +74,27 @@ class PaymentPersistencePortImplTest {
         when(modelMapper.map(paymentEntity, PaymentDomain.class)).thenReturn(paymentDomain);
 
         // Act
-        Optional<PaymentDomain> result = paymentPersistencePort.findById(idPayment);
+        PaymentDomain result = paymentPersistencePort.findById(idPayment);
 
         // Assert
-        assertThat(result).isPresent();
-        assertThat(result.get().getId()).isEqualTo(paymentDomain.getId());
-        assertThat(result.get().getAmount()).isEqualTo(paymentDomain.getAmount());
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(paymentDomain.getId());
+        assertThat(result.getAmount()).isEqualTo(paymentDomain.getAmount());
 
         verify(mongoRepository).findById(idPayment);
         verify(modelMapper).map(paymentEntity, PaymentDomain.class);
     }
 
     @Test
-    void findById_shouldReturnEmptyWhenNotFound() {
+    void findById_shouldThrowNotFoundException() {
         // Arrange
         var noExistentIdPayment = "0a4a9c89-0dba-41a5-8b91-0de08dfac9a3";
         when(mongoRepository.findById(noExistentIdPayment)).thenReturn(Optional.empty());
 
-        // Act
-        Optional<PaymentDomain> result = paymentPersistencePort.findById(noExistentIdPayment);
-
-        // Assert
-        assertThat(result).isEmpty();
+        // Act & Assert
+        assertThatThrownBy(() -> paymentPersistencePort.findById(noExistentIdPayment))
+                .isInstanceOf(PaymentNotFound.class)
+                .hasMessage("Payment not exists");
 
         verify(mongoRepository).findById(noExistentIdPayment);
         verifyNoInteractions(modelMapper);

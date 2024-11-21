@@ -45,7 +45,7 @@ class NotificationControllerTest {
             String topic = "merchant_order";
             String payload = "{\"details\":\"test\"}";
 
-            mockMvc.perform(post("/payment/notifications")
+            mockMvc.perform(post("/order/notifications")
                             .param("id", id.toString())
                             .param("topic", topic)
                             .content(payload)
@@ -61,7 +61,7 @@ class NotificationControllerTest {
             String topic = "other_topic";
             String payload = "{\"details\":\"test\"}";
 
-            mockMvc.perform(post("/payment/notifications")
+            mockMvc.perform(post("/order/notifications")
                             .param("id", id.toString())
                             .param("topic", topic)
                             .content(payload)

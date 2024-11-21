@@ -5,11 +5,7 @@ metadata:
 data:
   NOTIFICATION_URL: ""
   DB_NAME: ""
-  DB_URL: ""
-  DB_CLUSTER_ENDPOINT: ""
-  DB_USERNAME: ""
-  DB_PASSWORD: ""
-  DB_PORT: ""
+  CLUSTER_NAME: ""
   API_FOOD_URL: "http://api-food-service.default.svc.cluster.local:88"
   API_ORDER_URL: "http://api-order-service.default.svc.cluster.local:89"
   API_PAYMENT_URL: "http://api-payments-service.default.svc.cluster.local:90"

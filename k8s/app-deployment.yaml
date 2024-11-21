@@ -58,26 +58,11 @@ spec:
                 configMapKeyRef:
                   name: api-payments-config
                   key: DB_NAME
-            - name: DB_URL
+            - name: CLUSTER_NAME
               valueFrom:
                 configMapKeyRef:
                   name: api-payments-config
-                  key: DB_URL
-            - name: DB_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: api-payments-config
-                  key: DB_PORT
-            - name: DB_USERNAME
-              valueFrom:
-                configMapKeyRef:
-                  name: api-payments-config
-                  key: DB_USERNAME
-            - name: DB_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  name: api-payments-config
-                  key: DB_PASSWORD
+                  key: CLUSTER_NAME
             - name: NOTIFICATION_URL
               valueFrom:
                 configMapKeyRef:

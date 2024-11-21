@@ -50,7 +50,8 @@ class FindPaymentByIdImplTest {
     }
 
     @Test
-    void execute_shouldThrowException_whenPaymentDoesNotExist() {
+    void shouldThrowException_whenPaymentDoesNotExist() {
+
         // Arrange
         var idPayment = String.valueOf(UUID.randomUUID());
         when(paymentPersistence.findById(idPayment)).thenReturn(Optional.empty());

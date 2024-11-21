@@ -4,9 +4,8 @@ import br.com.api_payments.domain.entity.payment.enums.PaymentStatus;
 import br.com.api_payments.domain.entity.payment.enums.PaymentType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -16,17 +15,15 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Document(collection = "payments", collation = "en")
-@Getter
+@Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PaymentEntity {
 
     @Id
-    @Setter
     private String id;
 
     @NotNull
-    @Setter
     private BigDecimal amount;
 
     @NotNull

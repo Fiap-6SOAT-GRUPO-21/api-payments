@@ -8,7 +8,7 @@ spring:
     name: api-payments-service
   data:
     mongodb:
-      uri: mongodb+srv://${DB_USERNAME:user}:${DB_PASSWORD:pass}@${CLUSTER_NAME:localhost:27018}/${DB_NAME:apipayments}?retryWrites=true&w=majority
+      uri: ${CLUSTER_NAME:mongodb://user:pass@localhost:27018}/${DB_NAME:apipayments}?authSource=admin
       authentication-database: admin
   jpa:
     properties:

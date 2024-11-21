@@ -33,12 +33,8 @@ jobs:
         id: get-parameters
         run: |
           CLUSTER_NAME=$(aws ssm get-parameter --name "/techchallenge/api_payments/atlas/cluster_name" --with-decryption --query "Parameter.Value" --output text)
-          DB_USERNAME=$(aws ssm get-parameter --name "/techchallenge/api_payments/atlas/db_username" --with-decryption --query "Parameter.Value" --output text)
-          DB_PASSWORD=$(aws ssm get-parameter --name "/techchallenge/api_payments/atlas/db_password" --with-decryption --query "Parameter.Value" --output text)
           DB_NAME=$(aws ssm get-parameter --name "/techchallenge/api_payments/atlas/db_name" --with-decryption --query "Parameter.Value" --output text)
           echo "CLUSTER_NAME=$CLUSTER_NAME" >> $GITHUB_ENV
-          echo "DB_USERNAME=$DB_USERNAME" >> $GITHUB_ENV
-          echo "DB_PASSWORD=$DB_PASSWORD" >> $GITHUB_ENV
           echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
 
       - name: Kubectl tool installer
@@ -49,7 +45,7 @@ jobs:
       - name: Update ConfigMap with DocumentDB credentials
         run: |
           kubectl apply -f k8s/app-configmap.yaml
-          kubectl patch configmap api-payments-config --type=merge -p='{"data": {"DB_NAME": "'"$DB_NAME"'", "CLUSTER_NAME": "'"$CLUSTER_NAME"'", "DB_USERNAME": "'"$DB_USERNAME"'", "DB_PASSWORD": "'"$DB_PASSWORD"'"}}'
+          kubectl patch configmap api-payments-config --type=merge -p='{"data": {"DB_NAME": "'"$DB_NAME"'", "CLUSTER_NAME": "'"$CLUSTER_NAME"'"}}'
 
       - name: Deploy Application
         run: |

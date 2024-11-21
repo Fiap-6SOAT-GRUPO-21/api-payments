@@ -43,8 +43,6 @@ public class ProcessPaymentWithMercadoPagoImpl implements ProcessPayment {
         System.out.println("Processing payment with Mercado Pago");
 
         MercadoPagoRequest mercadoPagoRequest = new MercadoPagoRequest();
-        CashOutMercadoPago cashOutMercadoPago = new CashOutMercadoPago(BigDecimal.ZERO);
-        mercadoPagoRequest.setCashOut(cashOutMercadoPago);
         mercadoPagoRequest.setTitle("Tech Challenge");
         mercadoPagoRequest.setDescription("PEDIDOS: " + paymentIntegrationOrder.getOrderPaymentId());
         mercadoPagoRequest.setExpirationDate(DateTimeUtils.generateExpirationDatePayment());

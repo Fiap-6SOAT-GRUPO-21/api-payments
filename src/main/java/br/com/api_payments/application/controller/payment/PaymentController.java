@@ -43,7 +43,7 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentDTO);
     }
 
-    @Operation(summary = "Make a new payment")
+    @Operation(summary = "Find a payment")
     @GetMapping("/{paymentId}")
     public ResponseEntity<PaymentDTO> findPaymentById(@PathVariable("paymentId") String paymentId) {
 
@@ -53,6 +53,7 @@ public class PaymentController {
     }
 
 
+    @Operation(summary = "Generate a QR Code")
     @GetMapping(value = "/qr-code/{idPayment}", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<ByteArrayResource> generateQRCode(@PathVariable String idPayment) {
         try {

@@ -28,6 +28,7 @@
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
         <sonar.projectKey>Fiap-6SOAT-GRUPO-21_api-payments</sonar.projectKey>
+        <sonar.coverage.exclusions>**/infra/interceptor/**/*</sonar.coverage.exclusions>
         <sonar.coverage.exclusions>**/application/config/**/*</sonar.coverage.exclusions>
     </properties>
 

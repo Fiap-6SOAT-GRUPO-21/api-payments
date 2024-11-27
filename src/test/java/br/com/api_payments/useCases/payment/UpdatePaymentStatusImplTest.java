@@ -4,9 +4,16 @@ import br.com.api_payments.application.dtos.integration.mercadopago.payment.resp
 import br.com.api_payments.domain.entity.payment.PaymentDomain;
 import br.com.api_payments.domain.entity.payment.enums.PaymentStatus;
 import br.com.api_payments.domain.useCases.payment.FindPaymentById;
+import br.com.api_payments.infra.gateways.internal.ApiOrder;
+import br.com.api_payments.infra.gateways.internal.dto.StatusOrder;
 import br.com.api_payments.infra.gateways.payment.MercadoPagoClient;
 import br.com.api_payments.infra.persistence.repositories.payment.PaymentPersistencePortImpl;
+import br.com.api_payments.useCases.payment.exceptions.MercadoPagoGatewayNotFound;
+import br.com.api_payments.useCases.payment.exceptions.PaymentNotFound;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Value;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,6 +24,8 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
@@ -33,6 +42,9 @@ class UpdatePaymentStatusImplTest {
 
     @Mock
     private MercadoPagoClient mercadoPagoClient;
+
+    @Mock
+    private ApiOrder apiOrder;
 
     @InjectMocks
     private UpdatePaymentStatusImpl updatePaymentStatus;
@@ -76,4 +88,47 @@ class UpdatePaymentStatusImplTest {
         verifyNoMoreInteractions(mercadoPagoClient, findPaymentById, persistencePort);
     }
 
+    @Test
+    void shouldUpdatePaymentStatusToInPreparation() {
+
+        // Arrange
+        var merchantOrderId = 12345L;
+        var id = UUID.fromString("7f3cdc08-50d4-4063-aaab-acb2eaf8fdf6");
+        var externalReference = "7f3cdc08-50d4-4063-aaab-acb2eaf8fdf6";
+
+        var merchantOrderResponse = new MerchantOrderResponse(merchantOrderId, "closed", externalReference);
+
+        var paymentDomain = new PaymentDomain();
+        paymentDomain.setIdOrder(id);
+
+        doReturn(merchantOrderResponse).when(mercadoPagoClient).getOrder(accessToken, merchantOrderId);
+        when(findPaymentById.execute(externalReference)).thenReturn(paymentDomain);
+
+        // Act
+        updatePaymentStatus.execute(merchantOrderId);
+
+        // Assert
+        assertEquals(PaymentStatus.fromString("closed"), paymentDomain.getStatus());
+
+        verify(findPaymentById, times(1)).execute(externalReference);
+        verify(persistencePort, times(1)).save(paymentDomain);
+        verify(apiOrder, times(1)).updateOrderStatus(id, StatusOrder.IN_PREPARATION);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenClientFails() {
+        // Arrange
+        Long merchantOrderId = 12345L;
+
+        when(mercadoPagoClient.getOrder(accessToken, merchantOrderId))
+                .thenReturn(null);
+
+        // Act & Assert
+        assertThatThrownBy(() -> updatePaymentStatus.execute(merchantOrderId))
+                .isInstanceOf(MercadoPagoGatewayNotFound.class)
+                .hasMessageContaining("Mercado Pago Payment not exists");
+
+        verify(mercadoPagoClient, times(1)).getOrder(accessToken, merchantOrderId);
+        verifyNoInteractions(persistencePort, findPaymentById, apiOrder);
+    }
 }

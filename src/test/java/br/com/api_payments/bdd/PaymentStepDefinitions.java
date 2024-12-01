@@ -67,7 +67,7 @@ public class PaymentStepDefinitions {
     @Then("the payment details are returned")
     public void thePaymentDetailsAreReturned() {
         response.then()
-                .statusCode(HttpStatus.NOT_FOUND.value())
+                .statusCode(HttpStatus.OK.value())
                 .body(matchesJsonSchemaInClasspath("./schemas/paymentResponse.json"));
     }
 }

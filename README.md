@@ -10,6 +10,10 @@ utilizando Postgres para persistência de dados e Maven para gerenciamento de de
 O projeto é uma aplicação de pedidos, onde os usuários podem criar, atualizar e excluir pedidos. Cada pedido pode conter
 vários itens, e cada item está associado a um pedido.
 
+## Coverage
+
+![img.png](img.png)
+
 ## Coberta de Testes
 
 A cobertura de testes do projeto é de 80%. Utilizando SonarQube para análise de código e cobertura de testes.

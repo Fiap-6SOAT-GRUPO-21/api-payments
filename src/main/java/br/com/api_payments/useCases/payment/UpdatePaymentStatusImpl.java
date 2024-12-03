@@ -9,11 +9,13 @@ import br.com.api_payments.infra.gateways.internal.ApiOrder;
 import br.com.api_payments.infra.gateways.internal.dto.StatusOrder;
 import br.com.api_payments.infra.gateways.payment.MercadoPagoClient;
 import br.com.api_payments.infra.persistence.repositories.payment.PaymentPersistencePortImpl;
+import br.com.api_payments.useCases.payment.exceptions.MercadoPagoGatewayNotFound;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
@@ -35,6 +37,9 @@ public class UpdatePaymentStatusImpl implements UpdatePaymentStatus {
 
         try {
             MerchantOrderResponse response = mercadoPagoClient.getOrder(accessToken, merchantOrderId);
+            if (Objects.isNull(response))
+                throw new MercadoPagoGatewayNotFound();
+
             PaymentDomain paymentDomain = findPaymentById.execute(response.getExternalReference());
             paymentDomain.setStatus(PaymentStatus.fromString(response.getStatus()));
 
